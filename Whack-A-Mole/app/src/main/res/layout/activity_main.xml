@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <GridLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,26 +16,113 @@
         <!-- Define the mole holes as ImageViews -->
         <ImageView
             android:id="@+id/mole1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/mole_hole"
+            android:src="@drawable/Hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
 
+        <ImageView
+            android:id="@+id/mole2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole4"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole5"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole6"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole7"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole8"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
+
+        <ImageView
+            android:id="@+id/mole9"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/Hole"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:onClick="onMoleTap" />
         <!-- Repeat similar ImageView elements for other mole holes (mole2, mole3, etc.) -->
 
         <!-- TextView to display the score -->
         <TextView
             android:id="@+id/scoreTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="124dp"
             android:layout_height="wrap_content"
             android:layout_columnSpan="3"
             android:layout_gravity="center"
             android:text="Score: 0"
-            android:textSize="18sp" />
+            android:textSize="34sp" />
 
     </GridLayout>
 
