@@ -18,12 +18,13 @@
             android:id="@+id/mole1"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
-            android:scaleType="centerInside"
+            android:layout_columnWeight="1"
+            android:background="@drawable/hole"
+
             android:clickable="true"
-            android:onClick="onMoleTap" />
+            android:onClick="onMoleTap"
+            android:scaleType="centerInside" /> <!-- Initially set to mole hole background -->
 
         <ImageView
             android:id="@+id/mole2"
@@ -31,7 +32,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -42,7 +43,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -53,7 +54,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -64,7 +65,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -75,7 +76,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -86,7 +87,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:background="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />
@@ -97,10 +98,10 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:src="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
-            android:onClick="onMoleTap" />
+            android:onClick="onMoleTap"  />
 
         <ImageView
             android:id="@+id/mole9"
@@ -108,7 +109,7 @@
             android:layout_height="10dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/Hole"
+            android:src="@drawable/hole"
             android:scaleType="centerInside"
             android:clickable="true"
             android:onClick="onMoleTap" />

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- activity_game_over.xml -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/gameOverTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Over!"
+            android:textSize="24sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Restart Button -->
+        <Button
+            android:id="@+id/restartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restart Game"
+            android:layout_below="@id/gameOverTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

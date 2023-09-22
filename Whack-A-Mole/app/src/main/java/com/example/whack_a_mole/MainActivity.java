@@ -1,8 +1,9 @@
 package com.example.whack_a_mole;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,12 +18,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize gameManager, moleHoles, and scoreTextView
-        gameManager = new GameManager(3, 2000); // Example values, adjust as needed
-
-        moleHoles = new ImageView[9]; // Assuming 3x3 grid
-        moleHoles[0] = findViewById(R.id.mole1);
-        // Initialize the rest of the moleHoles array with findViewById
+        // Initialize moleHoles
+        moleHoles = new ImageView[]{
+                findViewById(R.id.mole1),
+                findViewById(R.id.mole2),
+                findViewById(R.id.mole3),
+                findViewById(R.id.mole4),
+                findViewById(R.id.mole5),
+                findViewById(R.id.mole6),
+                findViewById(R.id.mole7),
+                findViewById(R.id.mole8),
+                findViewById(R.id.mole9)
+        };
 
         scoreTextView = findViewById(R.id.scoreTextView);
 
@@ -35,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // Initialize gameManager, moleHoles, and scoreTextView
+        Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+        gameManager = new GameManager(this, 3, 2000, moleHoles, mainThreadHandler);
 
         startGame();
     }
@@ -59,4 +70,3 @@ public class MainActivity extends AppCompatActivity {
         scoreTextView.setText("Score: " + gameManager.getScore());
     }
 }
-
