@@ -160,6 +160,7 @@ public class GameManager {
     }
 
     public boolean isGameOver() {
+
         return missedMoles >= maxMissedMoles;
     }
 
