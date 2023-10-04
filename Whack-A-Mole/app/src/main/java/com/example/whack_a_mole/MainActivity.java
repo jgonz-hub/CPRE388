@@ -1,11 +1,12 @@
 package com.example.whack_a_mole;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,62 +19,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        boolean isGameOver = gameManager.isGameOver();// Your logic to determine if it's a game over scenario;
 
-        if (isGameOver) {
-            // Load the game over layout
-            setContentView(R.layout.activity_game_over);
+        // Initialize moleHoles and scoreTextView
+        moleHoles = new ImageView[]{
+                findViewById(R.id.mole1),
+                findViewById(R.id.mole2),
+                findViewById(R.id.mole3),
+                findViewById(R.id.mole4),
+                findViewById(R.id.mole5),
+                findViewById(R.id.mole6),
+                findViewById(R.id.mole7),
+                findViewById(R.id.mole8),
+                findViewById(R.id.mole9)
+        };
+        scoreTextView = findViewById(R.id.scoreTextView);
 
-            // Find the "Restart Game" button within the game over layout
-            Button restartButton = findViewById(R.id.restartButton);
-
-            // Set an OnClickListener for the restart button
-            restartButton.setOnClickListener(new View.OnClickListener() {
+        // Set click listeners for mole holes
+        for (ImageView moleHole : moleHoles) {
+            moleHole.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    // Handle restart button click
-                    gameManager.restartGame();
-                    updateUI(); // Update UI to reset the score
-                    // You might also want to change the layout back to your main game layout
-                    setContentView(R.layout.activity_main);
+                public void onClick(View view) {
+                    onMoleTap(view);
                 }
             });
-        } else {
-            // Initialize moleHoles
-            moleHoles = new ImageView[]{
-                    findViewById(R.id.mole1),
-                    findViewById(R.id.mole2),
-                    findViewById(R.id.mole3),
-                    findViewById(R.id.mole4),
-                    findViewById(R.id.mole5),
-                    findViewById(R.id.mole6),
-                    findViewById(R.id.mole7),
-                    findViewById(R.id.mole8),
-                    findViewById(R.id.mole9)
-            };
-
-            scoreTextView = findViewById(R.id.scoreTextView);
-
-            // Set click listeners for mole holes
-            for (ImageView moleHole : moleHoles) {
-                moleHole.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onMoleTap(view);
-                    }
-                });
-            }
-
-            // Initialize gameManager, moleHoles, and scoreTextView
-            Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-            gameManager = new GameManager(this, 3, 2000, moleHoles, mainThreadHandler);
-
-            // Find the "Restart Game" button and set an OnClickListener
-            Button restartButton = findViewById(R.id.restartButton);
-
-
-            startGame();
         }
+
+        // Initialize gameManager
+        Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+        gameManager = new GameManager(this, 3, 2000, moleHoles, mainThreadHandler);
+
+        // Start the game
+        startGame();
     }
 
     private void startGame() {
@@ -95,11 +71,36 @@ public class MainActivity extends AppCompatActivity {
         return -1; // Return -1 if the view is not found in the moleHoles array
     }
 
-
     private void updateUI() {
         scoreTextView.setText("Score: " + gameManager.getScore());
     }
 
-
-
+    // Handle the game over scenario
+//    public void handleGameOver() {
+//        // Stop the game
+//        gameManager.stopGame();
+//
+//        // Show a game over dialog with a restart button
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Game Over");
+//        builder.setMessage("Your score: " + gameManager.getScore());
+//
+//        // Add a restart button
+//        builder.setPositiveButton("Restart", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                // Handle restart button click
+//                gameManager.restartGame();
+//                updateUI(); // Update UI to reset the score
+//
+//                // Dismiss the game over dialog
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        builder.setCancelable(false); // Prevent dialog from being canceled by touching outside
+//
+//        AlertDialog gameOverDialog = builder.create();
+//        gameOverDialog.show();
+//    }
 }

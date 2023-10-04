@@ -1,6 +1,7 @@
 package com.example.whack_a_mole;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class GameManager {
     private static final int MOLE_VISIBILITY_DURATION = 2000; // 2000 milliseconds (2 seconds)
 
     public GameManager(Context context, int maxMissedMoles, int initialSpawnIntervalMillis, ImageView[] moleHoles, Handler handler)  {
+        this.context = context;
         this.moles = new ArrayList<>();
         this.score = 0;
         this.missedMoles = 0;
@@ -96,13 +98,21 @@ public class GameManager {
                     if (mole.isVisible()) {
                         mole.despawn();
                         // Handle any logic for when a mole times out (e.g., decrease score)
+
+                        incrementMissedMoles();
                     }
                 }
             }
         }, MOLE_VISIBILITY_DURATION); // Set MOLE_VISIBILITY_DURATION to the desired duration
     }
 
-
+    private void incrementMissedMoles() {
+        missedMoles++;
+        if (missedMoles >= maxMissedMoles) {
+            // Handle game over
+            handleGameOver();
+        }
+    }
     public void tapMole(int position) {
         Mole mole = moles.get(position);
         if (mole.isVisible()) {
@@ -119,6 +129,14 @@ public class GameManager {
         }
     }
 
+    public void stopGame() {
+            // Remove any pending callbacks from the moleHandler
+        moleHandler.removeCallbacksAndMessages(null);
+    }
+
+
+
+
     public void restartGame() {
         // Reset game state, score, missed moles, etc.
         score = 0;
@@ -132,32 +150,26 @@ public class GameManager {
         // Stop spawning moles by removing callbacks
         moleHandler.removeCallbacksAndMessages(null);
 
-        // Show a game over dialog with a restart button
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Game Over");
-        builder.setMessage("Your score: " + score);
+        // Load the high score
+        int highScore = HighScoreManager.getHighScore(context);
 
-        // Add a restart button
-        builder.setPositiveButton("Restart", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle restart button click
-                restartGame();
-            }
-        });
+        // Compare with the current score
+        if (score > highScore) {
+            // Update and save the high score
+            highScore = score;
+            HighScoreManager.setHighScore(context, highScore);
+        }
 
-        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle exit button click or any other actions
-            }
-        });
+        // Create an explicit intent to start the GameOverActivity
+        Intent intent = new Intent(context, GameOverActivity.class);
+        intent.putExtra("score", score); // Pass the player's score to the GameOverActivity
+        intent.putExtra("highScore", highScore); // Pass the high score to the GameOverActivity
 
-        builder.setCancelable(false); // Prevent dialog from being canceled by touching outside
-
-        AlertDialog gameOverDialog = builder.create();
-        gameOverDialog.show();
+        // Start the GameOverActivity
+        context.startActivity(intent);
     }
+
+
 
     public boolean isGameOver() {
 
