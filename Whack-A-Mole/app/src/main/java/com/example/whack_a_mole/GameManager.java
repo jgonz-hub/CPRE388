@@ -118,33 +118,28 @@ public class GameManager {
         if (mole.isVisible()) {
             mole.despawn();
             score++;
-            // Adjust the spawn interval or other game logic here
-            // For example, you can decrease spawnIntervalMillis here.
+
         } else {
-            missedMoles++;
-            if (missedMoles >= maxMissedMoles) {
-                // Handle game over
-                handleGameOver();
-            }
+            incrementMissedMoles();
+//            missedMoles++;
+//            if (missedMoles >= maxMissedMoles) {
+//                // Handle game over
+//                handleGameOver();
+//            }
         }
     }
 
-    public void stopGame() {
-            // Remove any pending callbacks from the moleHandler
-        moleHandler.removeCallbacksAndMessages(null);
-    }
 
 
 
-
-    public void restartGame() {
-        // Reset game state, score, missed moles, etc.
-        score = 0;
-        missedMoles = 0;
-
-        // Restart mole spawning
-        startGame();
-    }
+//    public void restartGame() {
+//        // Reset game state, score, missed moles, etc.
+//        score = 0;
+//        missedMoles = 0;
+//
+//        // Restart mole spawning
+//        startGame();
+//    }
 
     public void handleGameOver() {
         // Stop spawning moles by removing callbacks
