@@ -1,6 +1,9 @@
 package com.example.mapruler;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -9,8 +12,12 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -34,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private EditText locationEditText;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
 
     @Override
@@ -50,9 +58,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationEditText = findViewById(R.id.locationEditText);
-
+//        locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//
+//                    String locationName = locationEditText.getText().toString();
+//                    searchLocation(locationName);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+        Button findDistanceButton = findViewById(R.id.findDistanceButton);
+        findDistanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFindDistanceClick(v);
+            }
+        });
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // You can request the location updates or get last known location here
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        }
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted. You can now work with location.
+            } else {
+                // Permission denied.
+                Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -68,13 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_mine));
         // Add a marker in Sydney and move the camera
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+
             return;
         }
         fusedLocationClient.getLastLocation()
@@ -97,37 +134,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        //mMap.addMarker(new MarkerOptions().position(fusedLocationClient.getLastLocation()).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
     public void onFindDistanceClick(View view) {
         String locationName = locationEditText.getText().toString();
+
         if (!locationName.isEmpty()) {
             Geocoder geocoder = new Geocoder(this);
             try {
                 List<Address> addressList = geocoder.getFromLocationName(locationName, 1);
+
                 if (!addressList.isEmpty()) {
                     Address address = addressList.get(0);
                     double targetLatitude = address.getLatitude();
                     double targetLongitude = address.getLongitude();
 
-                    Location currentUserLocation = new Location("currentUserLocation");
-                    LatLng userLocation = mMap.getCameraPosition().target; // Get user's current location
-                    currentUserLocation.setLatitude(userLocation.latitude);
-                    currentUserLocation.setLongitude(userLocation.longitude);
+                    // Get the user's current location
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+                        return;
+                    }
+                    fusedLocationClient.getLastLocation()
+                            .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    if (location != null) {
+                                        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    Location targetLocation = new Location("targetLocation");
-                    targetLocation.setLatitude(targetLatitude);
-                    targetLocation.setLongitude(targetLongitude);
+                                        Location targetLocation = new Location("targetLocation");
+                                        targetLocation.setLatitude(targetLatitude);
+                                        targetLocation.setLongitude(targetLongitude);
 
-                    float[] results = new float[1];
-                    Location.distanceBetween(
-                            userLocation.latitude, userLocation.longitude,
-                            targetLatitude, targetLongitude,
-                            results
-                    );
+                                        float[] results = new float[1];
+                                        Location.distanceBetween(
+                                                userLocation.latitude, userLocation.longitude,
+                                                targetLatitude, targetLongitude,
+                                                results
+                                        );
 
-                    double distanceInKm = results[0] / 1000.0; // Convert distance to kilometers
+                                        double distanceInKm = results[0] / 1000.0; // Convert distance to kilometers
 
-                    // Display distance in a Toast
-                    Toast.makeText(this, "Distance to " + locationName + ": " + distanceInKm + " km", Toast.LENGTH_LONG).show();
+                                        // Display distance in a Toast
+                                        Toast.makeText(getApplicationContext(), "Distance to " + locationName + ": " + distanceInKm + " km", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "User location not available. Open Google Maps to update location.", Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            });
                 } else {
                     Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
                 }
@@ -135,7 +188,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(this, "Please enter a location.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a location.", LENGTH_SHORT).show();
         }
     }
+
+
 }

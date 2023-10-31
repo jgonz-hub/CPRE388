@@ -11,15 +11,31 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/locationEditText"
-    />
+        android:layout_above="@+id/inputLayout" />
 
-    <EditText
-        android:id="@+id/locationEditText"
+    <LinearLayout
+        android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Location Address"
-        android:layout_alignParentBottom="true"
-    />
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter a location..."
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/findDistanceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find Distance" />
+    </LinearLayout>
 </RelativeLayout>
+
 
