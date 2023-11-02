@@ -26,15 +26,6 @@ import com.google.mlkit.vision.label.ImageLabeler;
 import com.google.mlkit.vision.label.ImageLabeling;
 
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions;
-import com.google.mlkit.common.MlKitException;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.objects.ObjectDetection;
-import com.google.mlkit.vision.objects.ObjectDetector;
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions;
-import com.google.mlkit.vision.objects.defaults.PredefinedCategory;
-import com.google.mlkit.vision.objects.defaults.PredefinedCategory;
-import com.google.mlkit.vision.objects.defaults.PredefinedCategory;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -53,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        previewView = findViewById(R.id.previewView); // Make sure you have a PreviewView with this ID in your layout
+        previewView = findViewById(R.id.previewView);
         executor = ContextCompat.getMainExecutor(this);
 
         // Initialize the labeler with image labeling options
         ImageLabelerOptions options =
                 new ImageLabelerOptions.Builder()
-                        .setConfidenceThreshold(0.7f) // Adjust confidence threshold as needed
+                        .setConfidenceThreshold(0.7f)
                         .build();
 
         labeler = ImageLabeling.getClient(options);
@@ -108,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initializeCamera();
             } else {
-                // Handle the situation when the permission is denied.
+
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Call super to resolve the warning
@@ -124,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                 labeler.process(image)
                         .addOnSuccessListener(imageLabels -> {
-                            // Handle the list of image labels here
+
                             StringBuilder labelString = new StringBuilder();
                             for (ImageLabel label : imageLabels) {
                                 String text = label.getText();
@@ -136,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                             updateUIWithLabels(labelString.toString());
                         })
                         .addOnFailureListener(e -> {
-                            // Handle the failure
+
                             e.printStackTrace();
                         });
 
